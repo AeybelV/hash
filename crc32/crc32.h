@@ -40,4 +40,14 @@ uint32_t crc32_32(const uint8_t* input, size_t length);
  */
 uint32_t crc32_64(const uint8_t* input, size_t length);
 
+/**
+ * @brief Simple CRC32 implementation using slicing by 16. 16 bytes are processed at a time from the input message, until finalizing with Sarwate. Utilizes 16 KiB lookup table
+ *
+ * @param input Input message
+ * @param length Length of the message
+ * @return uint32_t CRC Result
+ */
+uint32_t crc32_128(const uint8_t* input, size_t length);
+
+
 #endif
