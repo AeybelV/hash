@@ -13,6 +13,17 @@
 #include <stdint.h>
 #include "crc32_lut.h"
 
+#ifdef _MSC_VER
+  #include <xmmintrin.h>
+  #define PREFETCH(location) _mm_prefetch(location, _MM_HINT_T0)
+#else
+  #ifdef __GNUC__
+    #define PREFETCH(location) __builtin_prefetch(location)
+  #else
+    #define PREFETCH(location) ;
+  #endif
+#endif
+
 /**
  * @brief Simple CRC32 implementation using Sarwate Algorithm, utilizes a 256 entry lookup table of uint32_t (1KiB)
  * 
@@ -23,7 +34,7 @@
 uint32_t crc32(const uint8_t* input, size_t length);
 
 /**
- * @brief Simple CRC32 implementation using slicing by 4. 4 bytes are processed at a time from the input message, until finalizing with Sarwate. Utilizes 4 KiB lookup table
+ * @brief CRC32 implementation that processes the input message 4 bytes at a time. Utilizes a 4 KiB lookup table
  * 
  * @param input Input message
  * @param length Length of the message
@@ -32,7 +43,7 @@ uint32_t crc32(const uint8_t* input, size_t length);
 uint32_t crc32_32(const uint8_t* input, size_t length);
 
 /**
- * @brief Simple CRC32 implementation using slicing by 8. 8 bytes are processed at a time from the input message, until finalizing with Sarwate. Utilizes 8 KiB lookup table
+ * @brief CRC32 implementation that processes the input message 8 bytes at a time. Utilizes a 8 KiB lookup table
  * 
  * @param input Input message
  * @param length Length of the message
@@ -41,7 +52,7 @@ uint32_t crc32_32(const uint8_t* input, size_t length);
 uint32_t crc32_64(const uint8_t* input, size_t length);
 
 /**
- * @brief Simple CRC32 implementation using slicing by 16. 16 bytes are processed at a time from the input message, until finalizing with Sarwate. Utilizes 16 KiB lookup table
+ * @brief CRC32 implementation that processes the input message 16 bytes at a time. Utilizes a 16 KiB lookup table
  *
  * @param input Input message
  * @param length Length of the message
@@ -49,5 +60,13 @@ uint32_t crc32_64(const uint8_t* input, size_t length);
  */
 uint32_t crc32_128(const uint8_t* input, size_t length);
 
+/**
+ * @brief Loop unrolled CRC32 implementation that processes the input message 16 bytes at a time. Utilizes a 16 KiB lookup table. There is a slight possibility of slight performance gains using data prefetching by defining CRC32_ENABLE_PREFETCH, otherwise there might be slight throughput cut. The compiler should always optimize this at O3.
+ *
+ * @param input Input message
+ * @param length Length of the message
+ * @return uint32_t CRC Result
+ */
+uint32_t crc32_128_(const uint8_t* input, size_t length);
 
 #endif

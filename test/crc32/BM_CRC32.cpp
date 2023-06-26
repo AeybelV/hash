@@ -46,10 +46,19 @@ static void BM_CRC32_128(benchmark::State& state) {
   delete[] input;
 }
 
+static void BM_CRC32_128_(benchmark::State& state) {
+  char* input = new char[state.range(0)];
+  for (auto _ : state)
+    crc32_128_((uint8_t*) input, state.range(0));
+  state.SetBytesProcessed(int64_t(state.iterations()) *
+                          int64_t(state.range(0)));
+  delete[] input;
+}
+
 BENCHMARK(BM_CRC32)->Arg(8)->Arg(64)->Arg(512)->Arg(4<<10)->Arg(8<<10)->Arg(16<<10)->Arg(32<<10)->Arg(64<<10);
 BENCHMARK(BM_CRC32_32)->Arg(8)->Arg(64)->Arg(512)->Arg(4<<10)->Arg(8<<10)->Arg(16<<10)->Arg(32<<10)->Arg(64<<10);
 BENCHMARK(BM_CRC32_64)->Arg(8)->Arg(64)->Arg(512)->Arg(4<<10)->Arg(8<<10)->Arg(16<<10)->Arg(32<<10)->Arg(64<<10);
 BENCHMARK(BM_CRC32_128)->Arg(8)->Arg(64)->Arg(512)->Arg(4<<10)->Arg(8<<10)->Arg(16<<10)->Arg(32<<10)->Arg(64<<10);
-
+BENCHMARK(BM_CRC32_128_)->Arg(8)->Arg(64)->Arg(512)->Arg(4<<10)->Arg(8<<10)->Arg(16<<10)->Arg(32<<10)->Arg(64<<10);
 
 BENCHMARK_MAIN();

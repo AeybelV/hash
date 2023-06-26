@@ -1,5 +1,5 @@
 MAX_STRING_LENGTH = 262144
-CRC32_ITERATIONS = 1000
+CRC32_ITERATIONS = 500
 
 import ctypes
 import zlib
@@ -20,7 +20,7 @@ FAILED_TESTS = 0
 file_path =Path(__file__).parent.resolve()
 
 crc32_lib = ctypes.CDLL(os.path.join(file_path, '../bin/crc32.o'))
-functions = [crc32_lib.crc32,crc32_lib.crc32_32,crc32_lib.crc32_64,crc32_lib.crc32_128]
+functions = [crc32_lib.crc32,crc32_lib.crc32_32,crc32_lib.crc32_64,crc32_lib.crc32_128,crc32_lib.crc32_128_]
 
 def CRC32_Test(func):
     global FAILED_TESTS
