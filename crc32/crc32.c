@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include "crc32.h"
 
+#if defined(CRC32_USE_SSE4_2)
+#include <nmmintrin.h>
+#endif
+
 uint32_t crc32(const uint8_t* input, size_t length){
     
     uint32_t crc = 0xFFFFFFFFu;
@@ -231,3 +235,54 @@ __attribute__((optimize("O3", "unroll-loops"))) uint32_t crc32_128_(const uint8_
     return ~crc;
 
 }
+
+#if defined(CRC32_USE_SSE4_2)
+__attribute__((optimize("O3", "unroll-loops"))) uint32_t crc32_sse_8(const uint8_t* input, size_t length){
+    
+    uint32_t crc = 0xFFFFFFFFu;
+    while(length--){
+        crc = _mm_crc32_u8(crc, *input++);
+    }
+
+    return ~crc;
+
+}
+
+__attribute__((optimize("O3", "unroll-loops"))) uint32_t crc32_sse_16(const uint8_t* input, size_t length){
+    
+    uint32_t crc = 0xFFFFFFFFu;
+    const uint16_t* ptr16 = (const uint16_t*) input;
+
+    while(length >= 2){
+        crc = _mm_crc32_u16(crc, *ptr16++);
+        length -=2;
+    }
+
+    const uint16_t* ptr8 = (const uint16_t*) ptr16;
+    while(length--){
+        crc = _mm_crc32_u8(crc, *ptr8++);
+    }
+
+    return ~crc;
+
+}
+
+__attribute__((optimize("O3", "unroll-loops"))) uint32_t crc32_sse_32(const uint8_t* input, size_t length){
+    
+    uint32_t crc = 0xFFFFFFFFu;
+
+    const uint32_t* ptr32 = (const uint32_t*) input;
+    while(length >= 4){
+        crc = _mm_crc32_u32(crc, *ptr32++);
+        length -= 4;
+    }
+
+    const uint8_t* ptr8 = (const uint8_t*) ptr32;
+    while(length--){
+        crc = _mm_crc32_u8(crc, *ptr8++);
+    }
+
+    return ~crc;
+
+}
+#endif

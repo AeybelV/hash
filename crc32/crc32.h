@@ -69,4 +69,43 @@ uint32_t crc32_128(const uint8_t* input, size_t length);
  */
 uint32_t crc32_128_(const uint8_t* input, size_t length);
 
+#if defined(CRC32_USE_SSE4_2)
+/**
+ * @brief CRC32 implementation using x86 CRC32 instruction in SSE4.2, CRC32_USE_SSE4_2 macro must be defined
+ * 
+ * @param input Input message
+ * @param length Length of the message
+ * @return uint32_t CRC Result
+ */
+uint32_t crc32_sse_8(const uint8_t* input, size_t length);
+
+/**
+ * @brief CRC32 implementation using x86 CRC32 instruction in SSE4.2, CRC32_USE_SSE4_2 macro must be defined
+ * 
+ * @param input Input message
+ * @param length Length of the message
+ * @return uint32_t CRC Result
+ */
+uint32_t crc32_sse_16(const uint8_t* input, size_t length);
+
+/**
+ * @brief CRC32 implementation using x86 CRC32 instruction in SSE4.2, CRC32_USE_SSE4_2 macro must be defined
+ * 
+ * @param input Input message
+ * @param length Length of the message
+ * @return uint32_t CRC Result
+ */
+uint32_t crc32_sse_32(const uint8_t* input, size_t length);
+
+/**
+ * @brief CRC32 implementation using x86 CRC32 instruction in SSE4.2, CRC32_USE_SSE4_2 macro must be defined
+ * 
+ * @param input Input message
+ * @param length Length of the message
+ * @return uint32_t CRC Result
+ */
+uint32_t crc32_sse_64(const uint8_t* input, size_t length);
+
+#endif
+
 #endif
