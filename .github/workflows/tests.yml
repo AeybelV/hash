@@ -1,31 +1,29 @@
 # This is a basic workflow that is manually triggered
 
-name: Run Test
+name: Run Tests
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
-on:
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
-        # The data type of the input
-        type: string
+on: [push, workflow_dispatch]
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   run_tests:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: Run script file
-      run: |
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.x'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
+      - name: Install dependencies
+        run: python -m pip install tqdm numpy crc32c colorama
+      - name: CRC32 Tests
+        run: |
          chmod +x ./test/crc32/run_test.sh
          ./test/crc32/run_test.sh
-      shell: bash
+        shell: bash
