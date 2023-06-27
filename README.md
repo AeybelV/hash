@@ -2,4 +2,4 @@
 
 # Hash
 
-A set of cryptographic and non-cryptographic has functions. Refer to the documents within each folder for more details regarding implementations and performance metrics.
+A set of cryptographic and non-cryptographic hashing functions. Contains various implementations of different hashing function to be chosen for your specific needs. Refer to the documents within each hash function folder for more information regarding the implementation and performance metrics.
