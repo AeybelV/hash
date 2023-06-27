@@ -1,6 +1,6 @@
 # CRC32
 
-Varius implementations of cyclic reduancy check (CRC) which can be used for error detecting. As CRC produces a check value of a fixed length, it can also be used as a hash function. Cross refetence the [Performance Metrics](Performance%20Metrics.md) for performance measurements.
+Varius implementations of cyclic reduancy check (CRC) which can be used for error detecting. As CRC produces a check value of a fixed length, it can also be used as a hash function. CRC32 is not reccomened to be used as a cryptographic hash. Cross reference the [Performance Metrics](Performance%20Metrics.md) for performance measurements as well as this document to choose a function for your purposes.
 
 - [CRC32](#crc32)
   - [Memoized Implementation](#memoized-implementation)
